@@ -17,8 +17,8 @@ struct TranslationItem {
 
     var localizableString: String {
         let string = TranslationItem.quotationMark + name + TranslationItem.quotationMark
-                        + TranslationItem.stringsTraslationMark + TranslationItem.quotationMark
-                        + value + TranslationItem.quotationMark
+            + TranslationItem.stringsTraslationMark + TranslationItem.quotationMark
+            + value.literalized() + TranslationItem.quotationMark
         return string
     }
 }

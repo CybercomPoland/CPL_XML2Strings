@@ -1,5 +1,4 @@
 
 "nav_sent_messages" = "Wysłane wiadomości"
-"test" = "Cudzysłów "testowy" wraz z ';'"
-"test2" = "Dodatkowy
-	Test.";"
+"test" = "Cudzysłów \"testowy\" wraz z \';\'"
+"test2" = "Dodatkowy\n\tTest.\";"
