@@ -58,11 +58,19 @@ class Converter {
         if let range = inputFilename.range(of: Configuration.transifexFileString) {
             let language = String(inputFilename[range.upperBound..<inputFilename.endIndex])
             let languagePath = "\(language).lproj"
-            let directoryUrl = URL(fileURLWithPath: configuration.outputFolder).appendingPathComponent(languagePath)
-            outputFileUrl = directoryUrl.appendingPathComponent(configuration.outputName).appendingPathExtension(Configuration.outputExtension)
+            let directoryUrl = URL(fileURLWithPath: configuration.outputFolder)
+                .appendingPathComponent(languagePath)
+            outputFileUrl = directoryUrl
+                .appendingPathComponent(configuration.outputName)
+                .appendingPathExtension(Configuration.outputExtension)
             try? FileManager.default.createDirectory(at: directoryUrl, withIntermediateDirectories: true, attributes: nil)
         } else {
-            outputFileUrl = URL(fileURLWithPath: configuration.outputFolder).appendingPathComponent(configuration.outputName).appendingPathExtension(Configuration.outputExtension)
+            let directoryUrl = URL(fileURLWithPath: configuration.outputFolder)
+                .appendingPathComponent(inputFilename)
+            outputFileUrl = directoryUrl
+                .appendingPathComponent(configuration.outputName)
+                .appendingPathExtension(Configuration.outputExtension)
+            try? FileManager.default.createDirectory(at: directoryUrl, withIntermediateDirectories: true, attributes: nil)
         }
 
         do {

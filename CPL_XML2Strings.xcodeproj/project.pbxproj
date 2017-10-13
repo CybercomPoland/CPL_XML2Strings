@@ -37,6 +37,7 @@
 		B9850EC41F8B5E2900587808 /* CPLXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPLXMLParser.swift; sourceTree = "<group>"; };
 		B9850EC61F8B6ED200587808 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		B9C7D4891F8E271000D832A2 /* String+Escaped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Escaped.swift"; sourceTree = "<group>"; };
+		B9C7D48B1F90AC8800D832A2 /* non-transifex-example_en.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "non-transifex-example_en.xml"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +76,7 @@
 				B9850EC41F8B5E2900587808 /* CPLXMLParser.swift */,
 				B922B8691F8CD21D0095CD7B /* for_use_example_stringsxml_en.xml */,
 				B922B86A1F8CEAAD0095CD7B /* for_use_example_stringsxml_pl.xml */,
+				B9C7D48B1F90AC8800D832A2 /* non-transifex-example_en.xml */,
 				B922B86E1F8CEACF0095CD7B /* Localizable.strings */,
 				B9C7D4891F8E271000D832A2 /* String+Escaped.swift */,
 			);
