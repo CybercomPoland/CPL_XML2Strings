@@ -3,4 +3,5 @@
 	<string name="test">Quotation "mark" check with ';'</string>
 	<string name="test2">Additional
 	Test.";</string>
+    <string name="test3">RegEx Test %1$s, %2$d, %3$S, %s, %11$s.</string>
     </resources>

@@ -3,4 +3,5 @@
 	<string name="test">Cudzysłów "testowy" wraz z ';'</string>
 	<string name="test2">Dodatkowy
 	Test.";</string>
+    <string name="test3">Test RegEx %1$s, %2$d, %3$S, %s, %11$s.</string>
     </resources>

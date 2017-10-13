@@ -16,10 +16,20 @@ struct TranslationItem {
     var value = ""
 
     var localizableString: String {
+        let convertedValue = convertStringFormat(string: value.literalized())
         let string = TranslationItem.quotationMark + name + TranslationItem.quotationMark
             + TranslationItem.stringsTraslationMark + TranslationItem.quotationMark
-            + value.literalized() + TranslationItem.quotationMark
+            + convertedValue + TranslationItem.quotationMark
         return string
+    }
+
+    private func convertStringFormat(string: String) -> String {
+        var outputString = string
+        let pattern = "(%)(\\d*\\$)?(s)"
+        if let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) {
+            outputString = regex.stringByReplacingMatches(in: outputString, options: [], range: NSRange(location: 0, length: outputString.characters.count), withTemplate: "$1$2@")
+        }
+        return outputString
     }
 }
 

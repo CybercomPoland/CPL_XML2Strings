@@ -51,7 +51,8 @@ class Converter {
         let stringLines = items.map{ (item) -> String in
             return item.localizableString
         }
-        let output = stringLines.reduce("") { return $0+"\n"+$1 }
+        var output = stringLines.reduce("") { return $0+"\n"+$1 }
+        output.removeFirst()
         let inputFilename = fromUrl.deletingPathExtension().lastPathComponent
         let outputFileUrl: URL
         if let range = inputFilename.range(of: Configuration.transifexFileString) {
@@ -66,9 +67,9 @@ class Converter {
 
         do {
             try output.write(to: outputFileUrl, atomically: true, encoding: .utf8)
-            print("file saved, path: \(outputFileUrl.path)")
+            print("File saved, path: \(outputFileUrl.path)")
         } catch {
-            print("could not save file to path: \(outputFileUrl.path)")
+            print("Could not save file to path: \(outputFileUrl.path)")
         }
         semaphore.signal()
     }
