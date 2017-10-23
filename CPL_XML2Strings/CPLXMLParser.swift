@@ -11,6 +11,7 @@ import Foundation
 struct TranslationItem {
     static let quotationMark = "\""
     static let stringsTraslationMark = " = "
+    static let stringsLineEndMark = "\";"
 
     var name = ""
     var value = ""
@@ -19,7 +20,7 @@ struct TranslationItem {
         let convertedValue = convertStringFormat(string: value.literalized())
         let string = TranslationItem.quotationMark + name + TranslationItem.quotationMark
             + TranslationItem.stringsTraslationMark + TranslationItem.quotationMark
-            + convertedValue + TranslationItem.quotationMark
+            + convertedValue + TranslationItem.stringsLineEndMark
         return string
     }
 
