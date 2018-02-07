@@ -4,4 +4,12 @@
 	<string name="test2">Additional
 	Test.";</string>
     <string name="test3">RegEx Test %1$s, %2$d, %3$S, %s, %11$s.</string>
-    </resources>
+    <plurals name="test4">
+        <item quantity="one">You have a new message.</item>
+        <item quantity="other">You have %d new messages.</item>
+    </plurals>
+    <plurals name="test5">
+        <item quantity="one">Incorrect, %d attempt left</item>
+        <item quantity="other">Incorrect, %d attempts left</item>
+    </plurals>
+</resources>

@@ -47,13 +47,22 @@ class Converter {
         return urls
     }
 
-    fileprivate func save(translation items: [TranslationItem], fromUrl: URL) {
+    private func save(translation items: [TranslationItem], fromUrl: URL) {
         let stringLines = items.map{ (item) -> String in
             return item.localizableString
         }
         var output = stringLines.reduce("") { return $0+"\n"+$1 }
         output.removeFirst()
-        let inputFilename = fromUrl.deletingPathExtension().lastPathComponent
+        writeToFile(contents: output, inputUrl: fromUrl, fileExtension: Configuration.outputExtension)
+    }
+
+    private func save(pluralTranslation items: [PluralTranslationItem], fromUrl: URL) {
+        let xmlString = StringsdictCreator.stringsdict(from: items, options: [.nodePreserveAttributeOrder, .nodePrettyPrint])
+        writeToFile(contents: xmlString, inputUrl: fromUrl, fileExtension: Configuration.pluralsOutputExtension)
+    }
+
+    private func writeToFile(contents: String, inputUrl: URL, fileExtension: String) {
+        let inputFilename = inputUrl.deletingPathExtension().lastPathComponent
         let outputFileUrl: URL
         if let range = inputFilename.range(of: Configuration.transifexFileString) {
             let language = String(inputFilename[range.upperBound..<inputFilename.endIndex])
@@ -62,31 +71,32 @@ class Converter {
                 .appendingPathComponent(languagePath)
             outputFileUrl = directoryUrl
                 .appendingPathComponent(configuration.outputName)
-                .appendingPathExtension(Configuration.outputExtension)
+                .appendingPathExtension(fileExtension)
             try? FileManager.default.createDirectory(at: directoryUrl, withIntermediateDirectories: true, attributes: nil)
         } else {
             let directoryUrl = URL(fileURLWithPath: configuration.outputFolder)
                 .appendingPathComponent(inputFilename)
             outputFileUrl = directoryUrl
                 .appendingPathComponent(configuration.outputName)
-                .appendingPathExtension(Configuration.outputExtension)
+                .appendingPathExtension(fileExtension)
             try? FileManager.default.createDirectory(at: directoryUrl, withIntermediateDirectories: true, attributes: nil)
         }
 
         do {
-            try output.write(to: outputFileUrl, atomically: true, encoding: .utf8)
+            try contents.write(to: outputFileUrl, atomically: true, encoding: .utf8)
             print("File saved, path: \(outputFileUrl.path)")
         } catch {
             print("Could not save file to path: \(outputFileUrl.path)")
         }
-        semaphore.signal()
     }
 }
 
 extension Converter: CPLXMLParserDelegate {
-    func didFinishParsing(url: URL, translatedItems: [TranslationItem]) {
+    func didFinishParsing(url: URL, translatedItems: [TranslationItem], translatedPluralItems: [PluralTranslationItem]) {
         print("Parsed \(url.lastPathComponent),\n translated items: \(translatedItems.count)")
         save(translation: translatedItems, fromUrl: url)
+        save(pluralTranslation: translatedPluralItems, fromUrl: url)
+        semaphore.signal()
     }
 
     func errorOccured(url: URL, parseError: Error) {

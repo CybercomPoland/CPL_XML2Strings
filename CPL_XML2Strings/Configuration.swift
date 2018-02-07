@@ -14,6 +14,7 @@ class Configuration {
     static let outputNameKey = "-n"
     static let inputExtension = "xml"
     static let outputExtension = "strings"
+    static let pluralsOutputExtension = "stringsdict"
     static let transifexFileString = "stringsxml_"
 
     var inputFolder: String = Bundle.main.bundlePath

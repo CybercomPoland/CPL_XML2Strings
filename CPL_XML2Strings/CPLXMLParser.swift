@@ -8,40 +8,16 @@
 
 import Foundation
 
-struct TranslationItem {
-    static let quotationMark = "\""
-    static let stringsTraslationMark = " = "
-    static let stringsLineEndMark = "\";"
-
-    var name = ""
-    var value = ""
-
-    var localizableString: String {
-        let convertedValue = convertStringFormat(string: value.literalized())
-        let string = TranslationItem.quotationMark + name + TranslationItem.quotationMark
-            + TranslationItem.stringsTraslationMark + TranslationItem.quotationMark
-            + convertedValue + TranslationItem.stringsLineEndMark
-        return string
-    }
-
-    private func convertStringFormat(string: String) -> String {
-        var outputString = string
-        let pattern = "(%)(\\d*\\$)?(s)"
-        if let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) {
-            outputString = regex.stringByReplacingMatches(in: outputString, options: [], range: NSRange(location: 0, length: outputString.characters.count), withTemplate: "$1$2@")
-        }
-        return outputString
-    }
-}
-
 protocol CPLXMLParserDelegate: class {
-    func didFinishParsing(url: URL, translatedItems: [TranslationItem])
+    func didFinishParsing(url: URL, translatedItems: [TranslationItem], translatedPluralItems: [PluralTranslationItem])
     func errorOccured(url: URL, parseError: Error)
 }
 
 class CPLXMLParser: NSObject, XMLParserDelegate {
     private var currentItem = TranslationItem()
+    private var currentPluralItem = PluralTranslationItem()
     private var translatedItems: [TranslationItem] = []
+    private var translatedPluralItems: [PluralTranslationItem] = []
     weak var delegate: CPLXMLParserDelegate?
     let url: URL
     let parser: XMLParser
@@ -66,11 +42,24 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
     }
 
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        if elementName == "string" {
+        switch elementName {
+        case "string":
             currentItem = TranslationItem()
             if let name = attributeDict["name"] {
                 currentItem.name = name
             }
+        case "plurals":
+            currentPluralItem = PluralTranslationItem()
+            if let name = attributeDict["name"] {
+                currentPluralItem.name = name
+            }
+        case "item":
+            currentItem = TranslationItem()
+            if let quantity = attributeDict["quantity"] {
+                currentItem.name = quantity
+            }
+        default:
+            break
         }
     }
 
@@ -81,16 +70,26 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
     }
 
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        if elementName == "string" && !currentItem.name.isEmpty {
-            var item = TranslationItem()
-            item.name = currentItem.name
-            item.value = currentItem.value
+        switch elementName {
+        case "string" where !currentItem.name.isEmpty:
+            let item = TranslationItem(name: currentItem.name, value: currentItem.value)
             translatedItems.append(item)
+            currentItem.clear()
+        case "plurals" where !currentPluralItem.name.isEmpty:
+            let item = PluralTranslationItem(name: currentPluralItem.name, plurals: currentPluralItem.plurals)
+            translatedPluralItems.append(item)
+            currentPluralItem.clear()
+        case "item" where !currentItem.name.isEmpty && !currentPluralItem.name.isEmpty:
+            let item = TranslationItem(name: currentItem.name, value: currentItem.value)
+            currentPluralItem.plurals.append(item)
+            currentItem.clear()
+        default:
+            break
         }
     }
 
     func parserDidEndDocument(_ parser: XMLParser) {
-        delegate?.didFinishParsing(url: url, translatedItems: translatedItems)
+        delegate?.didFinishParsing(url: url, translatedItems: translatedItems, translatedPluralItems: translatedPluralItems)
     }
 
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
