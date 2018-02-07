@@ -30,7 +30,7 @@ class StringsdictCreator {
             dict.addChild(XMLElement(name: "key", stringValue: item.name))
             let itemElement = XMLElement(name: "dict")
             itemElement.addChild(XMLElement(name: "key", stringValue: "NSStringLocalizedFormatKey"))
-            itemElement.addChild(XMLElement(name: "string", stringValue: "%#@VARIABLE@"))
+            itemElement.addChild(XMLElement(name: "string", stringValue: "%#@Variable@"))
             itemElement.addChild(XMLElement(name: "key", stringValue: "Variable"))
             let pluralsElement = XMLElement(name: "dict")
             pluralsElement.addChild(XMLElement(name: "key", stringValue: "NSStringFormatSpecTypeKey"))
