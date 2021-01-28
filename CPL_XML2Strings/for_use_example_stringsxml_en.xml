@@ -1,6 +1,7 @@
 <resources>
-    <string name="nav_sent_messages">Sent messages</string>
-	<string name="test">Quotation "mark" check with ';'</string>
+    <string name="This one breaks">By continuing the example I agree to check CPL_XML2Strings. I will receive all strings and escape charactrers from public domains electronically.\n\nDelivery method cannot be changed, so you're out of luck.</string>
+    <string name="nav_sent_messages">Sent messages \n New messages</string>
+	<string name="test">Quotation "mark" check with \';'</string>
 	<string name="test2">Additional
 	Test.";</string>
     <string name="test3">RegEx Test %1$s, %2$d, %3$S, %s, %11$s.</string>

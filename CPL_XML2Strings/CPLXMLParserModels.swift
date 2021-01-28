@@ -30,7 +30,7 @@ struct TranslationItem {
         var outputString = string
         let pattern = "(%)(\\d*\\$)?(s)"
         if let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) {
-            outputString = regex.stringByReplacingMatches(in: outputString, options: [], range: NSRange(location: 0, length: outputString.characters.count), withTemplate: "$1$2@")
+            outputString = regex.stringByReplacingMatches(in: outputString, options: [], range: NSRange(location: 0, length: outputString.count), withTemplate: "$1$2@")
         }
         return outputString
     }

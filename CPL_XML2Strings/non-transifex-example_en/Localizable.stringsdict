@@ -6,7 +6,7 @@
         <key>test4</key>
         <dict>
             <key>NSStringLocalizedFormatKey</key>
-            <string>%#@VARIABLE@</string>
+            <string>%#@Variable@</string>
             <key>Variable</key>
             <dict>
                 <key>NSStringFormatSpecTypeKey</key>
@@ -22,7 +22,7 @@
         <key>test5</key>
         <dict>
             <key>NSStringLocalizedFormatKey</key>
-            <string>%#@VARIABLE@</string>
+            <string>%#@Variable@</string>
             <key>Variable</key>
             <dict>
                 <key>NSStringFormatSpecTypeKey</key>

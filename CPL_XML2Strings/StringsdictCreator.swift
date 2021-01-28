@@ -11,9 +11,10 @@ import Foundation
 class StringsdictCreator {
     private init() {}
 
-    //TODO: Only one variable and NSStringFormatValueType supported.
+    // MSG-5752 TODO: Only one variable and NSStringFormatValueType supported.
     class func stringsdict(from items: [PluralTranslationItem], options: XMLNode.Options) -> String {
         let root = XMLElement(name: "plist")
+        //swiftlint:disable:next force_cast
         let plistAttribute = XMLNode.attribute(withName: "version", stringValue: "1.0") as! XMLNode
         root.addAttribute(plistAttribute)
         let dict = XMLElement(name: "dict")

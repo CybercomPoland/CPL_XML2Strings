@@ -9,14 +9,14 @@
 import Foundation
 
 extension String {
-    static let escapeSequences = [
+    private static let escapeSequences = [
         (original: "\0", escaped: "\\0"),
-        (original: "\\", escaped: "\\\\"),
+//        (original: "\\", escaped: "\\\\"), //Not used, plus there's issues with this one.
         (original: "\t", escaped: "\\t"),
         (original: "\n", escaped: "\\n"),
         (original: "\r", escaped: "\\r"),
         (original: "\"", escaped: "\\\""),
-        (original: "\'", escaped: "\\'"),
+        (original: "\\'", escaped: "\'") //Transifex file already has this one escaped, while we don't need it escaped at all.
     ]
 
     mutating func literalize() {

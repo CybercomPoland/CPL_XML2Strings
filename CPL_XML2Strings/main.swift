@@ -8,8 +8,13 @@
 
 import Foundation
 
-var arguments = CommandLine.arguments
-arguments.removeFirst()
-let configuration = Configuration(arguments: arguments)
-let converter = Converter(configuration: configuration)
-converter.parse()
+do {
+    var arguments = CommandLine.arguments
+    // First argument is the executable file path. We don't need that, so remove it from arguments.
+    arguments.removeFirst()
+    let configuration = try Configuration(arguments: arguments)
+    let converter = Converter(configuration: configuration)
+    converter.parse()
+} catch let error as Configuration.ConfigurationErrors {
+    print("CPL_XLM2Strings Configuration Error: \(error.description)")
+}

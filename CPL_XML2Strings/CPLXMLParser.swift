@@ -22,10 +22,8 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
     let url: URL
     let parser: XMLParser
 
-    init?(url: URL) {
-        guard let data = try? Data(contentsOf: url) else {
-            return nil
-        }
+    init(url: URL) throws {
+        let data = try Data(contentsOf: url)
         self.url = url
         self.parser = XMLParser(data: data)
         super.init()
@@ -41,7 +39,7 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
         translatedItems.removeAll()
     }
 
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
         switch elementName {
         case "string":
             currentItem = TranslationItem()

@@ -1,4 +1,4 @@
 "nav_sent_messages" = "Sent messages";
-"test" = "Quotation \"mark\" check with \';\'";
+"test" = "Quotation \"mark\" check with ';'";
 "test2" = "Additional\n\tTest.\";";
 "test3" = "RegEx Test %1$@, %2$d, %3$@, %@, %11$@.";
