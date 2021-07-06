@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/adrian.ziemecki/iOS_Projects/CPL_XML2Strings/CPL_XML2Strings.xcodeproj">
+      location = "group:Source">
+   </FileRef>
+   <FileRef
+      location = "group:README.md">
+   </FileRef>
+   <FileRef
+      location = "group:CPL_XML2Strings.xcodeproj">
    </FileRef>
 </Workspace>

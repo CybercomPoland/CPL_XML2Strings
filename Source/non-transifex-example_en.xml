@@ -4,6 +4,7 @@
 	<string name="test2">Additional
 	Test.";</string>
     <string name="test3">RegEx Test %1$s, %2$d, %3$S, %s, %11$s.</string>
+    <string name="smartslot.configuration.troubleshoot_message">If the ambient light is not blinking, please proceed with <a href="http:\\www.tcsag.de"><b><i>Troubleshooting</i></b></a>.</string>
     <plurals name="test4">
         <item quantity="one">You have a new message.</item>
         <item quantity="other">You have %d new messages.</item>

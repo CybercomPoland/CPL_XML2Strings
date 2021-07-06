@@ -34,6 +34,8 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
         parser.parse()
     }
 
+    // MARK: - XMLParserDelegate
+
     func parserDidStartDocument(_ parser: XMLParser) {
         currentItem = TranslationItem()
         translatedItems.removeAll()
@@ -56,6 +58,12 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
             if let quantity = attributeDict["quantity"] {
                 currentItem.name = quantity
             }
+        // HOTFIX: To keep the following selected html markups in the translated content
+        case "a", "i", "b":
+            let attributes = attributeDict.map { args in
+                "\(args.key)=\"\(args.value)\""
+            }.joined(separator: " ")
+            currentItem.value += attributes.isEmpty ? "<\(elementName)>" : "<\(elementName) \(attributes)>"
         default:
             break
         }
@@ -81,6 +89,9 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
             let item = TranslationItem(name: currentItem.name, value: currentItem.value)
             currentPluralItem.plurals.append(item)
             currentItem.clear()
+        // HOTFIX: To keep the following selected html markups in the translated content
+        case "a", "i", "b":
+            currentItem.value += "</\(elementName)>"
         default:
             break
         }
