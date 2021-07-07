@@ -9,7 +9,7 @@
 import Foundation
 
 protocol CPLXMLParserDelegate: class {
-    func didFinishParsing(url: URL, translatedItems: [TranslationItem], translatedPluralItems: [PluralTranslationItem])
+    func didFinishParsing(url: URL, translatedItems: [TranslationItem], translatedPluralItems: [PluralTranslationItem], translatedInfoPlistItems: [TranslationItem])
     func errorOccured(url: URL, parseError: Error)
 }
 
@@ -18,6 +18,7 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
     private var currentPluralItem = PluralTranslationItem()
     private var translatedItems: [TranslationItem] = []
     private var translatedPluralItems: [PluralTranslationItem] = []
+    private var translatedInfoPlistItems: [TranslationItem] = []
     weak var delegate: CPLXMLParserDelegate?
     let url: URL
     let parser: XMLParser
@@ -79,7 +80,11 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
         switch elementName {
         case "string" where !currentItem.name.isEmpty:
             let item = TranslationItem(name: currentItem.name, value: currentItem.value)
-            translatedItems.append(item)
+            if item.name.hasPrefix("NS") {
+                translatedInfoPlistItems.append(item)
+            } else {
+                translatedItems.append(item)
+            }
             currentItem.clear()
         case "plurals" where !currentPluralItem.name.isEmpty:
             let item = PluralTranslationItem(name: currentPluralItem.name, plurals: currentPluralItem.plurals)
@@ -98,7 +103,7 @@ class CPLXMLParser: NSObject, XMLParserDelegate {
     }
 
     func parserDidEndDocument(_ parser: XMLParser) {
-        delegate?.didFinishParsing(url: url, translatedItems: translatedItems, translatedPluralItems: translatedPluralItems)
+        delegate?.didFinishParsing(url: url, translatedItems: translatedItems, translatedPluralItems: translatedPluralItems, translatedInfoPlistItems: translatedInfoPlistItems)
     }
 
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
