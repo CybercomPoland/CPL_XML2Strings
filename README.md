@@ -1,7 +1,7 @@
 # CPL_XML2Strings
 XML to Strings parser, built for .xml translation files from Transifex.
 
-# Usage
+## Usage
 Available input parameters:
 -i [path] -> input folder path, defaults to Bundle.main.path (the directory of the CPL_XML2Strings executable file).
 -o [path] -> output folder path, defaults to Bundle.main.path (the directory of the CPL_XML2Strings executable file).
@@ -12,3 +12,6 @@ The app searches for .xml files inside the input folder (no deep search, files i
 Formatted strings are supported, Android '%s' strings are translated into '%@' for iOS.
 
 Transifex files use 'xmlstrings_' in their filename, followed by a country code that defines the language. The app looks for that element in the filename. If found, the new .strings file is put inside a .lproj folder with the extracted country code as the name. Otherwise, the new file is put inside a folder that is named the same as the input file.
+
+
+> Note: Following HTML markups are not removed from the translated text: a, i, b

@@ -50,20 +50,36 @@ class Converter {
     }
 
     private func save(translation items: [TranslationItem], fromUrl: URL) {
-        let stringLines = items.map { (item) -> String in
-            return item.localizableString
+        let stringLines = items.map { $0.localizableString }.sorted { lhs, rhs in
+            let isLhsGeneric = lhs.lowercased().hasPrefix("\"generic")
+            let isRhsGeneric = rhs.lowercased().hasPrefix("\"generic")
+            // other keys sorted
+            if isLhsGeneric && isRhsGeneric {
+                return lhs < rhs
+            } else if isLhsGeneric {
+                return true
+            } else if isRhsGeneric {
+                return false
+            }
+            // generic keys at the top
+            return lhs < rhs
         }
-        var output = stringLines.reduce("") { return $0+"\n"+$1 }
-        output.removeFirst()
-        writeToFile(contents: output, inputUrl: fromUrl, fileExtension: Configuration.Constants.outputExtension)
+        let output = stringLines.joined(separator: "\n")
+        writeToFile(contents: output, inputUrl: fromUrl, fileName: configuration.localizableStringsFileName, fileExtension: Configuration.Constants.outputExtension)
+    }
+
+    private func save(infoPlistTranslation items: [TranslationItem], fromUrl: URL) {
+        let stringLines = items.map { $0.localizableString }.sorted()
+        let output = stringLines.joined(separator: "\n")
+        writeToFile(contents: output, inputUrl: fromUrl, fileName: configuration.infoPlistStringsFileName, fileExtension: Configuration.Constants.outputExtension)
     }
 
     private func save(pluralTranslation items: [PluralTranslationItem], fromUrl: URL) {
         let xmlString = StringsdictCreator.stringsdict(from: items, options: [.nodePreserveAttributeOrder, .nodePrettyPrint])
-        writeToFile(contents: xmlString, inputUrl: fromUrl, fileExtension: Configuration.Constants.pluralsOutputExtension)
+        writeToFile(contents: xmlString, inputUrl: fromUrl, fileName: configuration.localizableStringsFileName, fileExtension: Configuration.Constants.pluralsOutputExtension)
     }
 
-    private func writeToFile(contents: String, inputUrl: URL, fileExtension: String) {
+    private func writeToFile(contents: String, inputUrl: URL, fileName: String, fileExtension: String) {
         let inputFilename = inputUrl.deletingPathExtension().lastPathComponent
         let outputFileUrl: URL
         if let range = inputFilename.range(of: Configuration.Constants.transifexFileString) {
@@ -75,14 +91,14 @@ class Converter {
             let directoryUrl = URL(fileURLWithPath: configuration.outputFolder)
                 .appendingPathComponent(languagePath)
             outputFileUrl = directoryUrl
-                .appendingPathComponent(configuration.outputName)
+                .appendingPathComponent(fileName)
                 .appendingPathExtension(fileExtension)
             try? FileManager.default.createDirectory(at: directoryUrl, withIntermediateDirectories: true, attributes: nil)
         } else {
             let directoryUrl = URL(fileURLWithPath: configuration.outputFolder)
                 .appendingPathComponent(inputFilename)
             outputFileUrl = directoryUrl
-                .appendingPathComponent(configuration.outputName)
+                .appendingPathComponent(fileName)
                 .appendingPathExtension(fileExtension)
             try? FileManager.default.createDirectory(at: directoryUrl, withIntermediateDirectories: true, attributes: nil)
         }
@@ -97,10 +113,11 @@ class Converter {
 }
 
 extension Converter: CPLXMLParserDelegate {
-    func didFinishParsing(url: URL, translatedItems: [TranslationItem], translatedPluralItems: [PluralTranslationItem]) {
+    func didFinishParsing(url: URL, translatedItems: [TranslationItem], translatedPluralItems: [PluralTranslationItem], translatedInfoPlistItems: [TranslationItem]) {
         print("CPL_XML2Strings: Parsed \(url.lastPathComponent),\n translated items: \(translatedItems.count)")
         save(translation: translatedItems, fromUrl: url)
         save(pluralTranslation: translatedPluralItems, fromUrl: url)
+        save(infoPlistTranslation: translatedInfoPlistItems, fromUrl: url)
         semaphore.signal()
     }
 

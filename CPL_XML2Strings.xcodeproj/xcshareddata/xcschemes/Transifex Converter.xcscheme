@@ -53,6 +53,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-i &quot;${SRCROOT}/../SFIMobile/Common/LocalizedStrings/TransifexFiles&quot; -o &quot;${SRCROOT}/../SFIMobile/Common/LocalizedStrings&quot; -n Localizable -swap en_GB Base -swap sv_FI sv -swap fi_FI fi"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-i &quot;${SRCROOT}/Source&quot; -o &quot;${SRCROOT}/Output&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

@@ -39,7 +39,8 @@ class Configuration {
 
     var inputFolder: String = Bundle.main.bundlePath
     var outputFolder: String = Bundle.main.bundlePath
-    var outputName: String = "Localizable"
+    var localizableStringsFileName: String = "Localizable"
+    var infoPlistStringsFileName: String = "InfoPlist"
     var languageFilenameSubstitutes = [String: String]()
 
     init(arguments: [String]) throws {
@@ -61,7 +62,7 @@ class Configuration {
             case Constants.Parameters.outputFolder:
                 outputFolder = firstArgument
             case Constants.Parameters.outputName:
-                outputName = firstArgument
+                localizableStringsFileName = firstArgument
             case Constants.Parameters.swapName:
                 // This parameter requires 2 arguments
                 guard index + 2 < arguments.count else { throw ConfigurationErrors.missingArgument(for: parameter) }
