@@ -52,6 +52,11 @@ class Converter {
     private func save(translation items: [TranslationItem], fromUrl: URL) {
         let stringLines = items.map { (item) -> String in
             return item.localizableString
+        }.sorted { lhs, rhs in
+            // generic keys at the top
+            if lhs.lowercased().hasPrefix("generic") { return false }
+            // other keys sorted
+            return lhs < rhs
         }
         var output = stringLines.reduce("") { return $0+"\n"+$1 }
         output.removeFirst()
